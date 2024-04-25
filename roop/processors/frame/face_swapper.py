@@ -84,12 +84,14 @@ def process_frames(source_path: str, temp_frame_paths: List[str], update: Callab
             update()
 
 
-def process_image(source_path: str, target_path: str, output_path: str) -> None:
+def process_image(args):
+    source_path, target_path, output_path = args
     source_face = get_one_face(cv2.imread(source_path))
     target_frame = cv2.imread(target_path)
     reference_face = None if roop.globals.many_faces else get_one_face(target_frame, roop.globals.reference_face_position)
     result = process_frame(source_face, reference_face, target_frame)
-    cv2.imwrite(output_path, result)
+    #cv2.imwrite(output_path, result)
+    return result
 
 
 def process_video(source_path: str, temp_frame_paths: List[str]) -> None:
