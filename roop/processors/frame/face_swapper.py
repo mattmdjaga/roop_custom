@@ -2,6 +2,8 @@ from typing import Any, List, Callable
 import cv2
 import insightface
 import threading
+from PIL import Image
+import numpy as np
 
 import roop.globals
 import roop.processors.frame.core
@@ -85,10 +87,11 @@ def process_frames(source_path: str, temp_frame_paths: List[str], update: Callab
 
 
 def process_image(args):
-    source_path, target_path, output_path = args
-    source_face = get_one_face(cv2.imread(source_path))
-    target_frame = cv2.imread(target_path)
-    reference_face = None if roop.globals.many_faces else get_one_face(target_frame, roop.globals.reference_face_position)
+    source_img, target_img = args
+    source_face = get_one_face(cv2.cvtColor(np.array(source_img), cv2.COLOR_RGB2BGR))
+    target_frame = cv2.cvtColor(np.array(target_img), cv2.COLOR_RGB2BGR)
+    #reference_face = None if roop.globals.many_faces else get_one_face(target_frame, roop.globals.reference_face_position)
+    reference_face = None if roop.globals.many_faces else get_one_face(target_frame, 0)
     result = process_frame(source_face, reference_face, target_frame)
     #cv2.imwrite(output_path, result)
     return result
