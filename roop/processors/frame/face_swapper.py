@@ -4,6 +4,12 @@ import insightface
 import threading
 from PIL import Image
 import numpy as np
+import os
+import sys
+
+current_dir = os.path.dirname(__file__)
+parent_parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+sys.path.append(parent_parent_dir)
 
 import roop.globals
 import roop.processors.frame.core

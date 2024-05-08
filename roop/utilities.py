@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import List, Optional
 from tqdm import tqdm
 
-import roop.globals
+import roop_custom.roop.globals
 
 TEMP_DIRECTORY = 'temp'
 TEMP_VIDEO_FILE = 'temp.mp4'

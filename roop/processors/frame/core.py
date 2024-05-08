@@ -8,6 +8,10 @@ from types import ModuleType
 from typing import Any, List, Callable
 from tqdm import tqdm
 
+current_dir = os.path.dirname(__file__)
+parent_parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+sys.path.append(parent_parent_dir)
+
 import roop
 
 FRAME_PROCESSORS_MODULES: List[ModuleType] = []

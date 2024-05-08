@@ -6,6 +6,12 @@ from tkinterdnd2 import TkinterDnD, DND_ALL
 from typing import Any, Callable, Tuple, Optional
 import cv2
 from PIL import Image, ImageOps
+current_dir = os.path.dirname(__file__)
+
+
+parent_parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_parent_dir)
+#print(sys.path)
 
 import roop.globals
 import roop.metadata

@@ -15,6 +15,11 @@ import shutil
 import argparse
 import onnxruntime
 import tensorflow
+
+current_dir = os.path.dirname(__file__)
+parent_parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_parent_dir)
+
 import roop.globals
 import roop.metadata
 import roop.ui as ui
