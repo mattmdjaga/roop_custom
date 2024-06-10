@@ -2,14 +2,16 @@ from typing import Dict, List, Any, Tuple
 import io
 import base64
 import sys
-
-sys.path.append("/home/azureuser/API_script/roop_custom/CodeFormer/CodeFormer")
 import os
+#sys.path.append("/home/azureuser/API_script/roop_custom/CodeFormer/CodeFormer")
+
+codeformer_dir = os.path.dirname(__file__) + "/CodeFormer/CodeFormer" 
+sys.path.append(codeformer_dir)
+
 import cv2
 import torch
 import onnxruntime
 import torch.nn.functional as F
-import gradio as gr
 from PIL import Image
 import numpy as np
 from matplotlib import pyplot as plt
@@ -40,7 +42,7 @@ def get_codeformer_models():
         n_layers=9,
         connect_list=["32", "64", "128", "256"],
     ).to(device)
-    ckpt_path = "/home/azureuser/API_script/roop_custom/CodeFormer/CodeFormer/weights/CodeFormer/codeformer.pth"
+    ckpt_path = "roop_custom/CodeFormer/CodeFormer/weights/CodeFormer/codeformer.pth"
     checkpoint = torch.load(ckpt_path)["params_ema"]
     codeformer_net.load_state_dict(checkpoint)
     codeformer_net.eval()
@@ -60,7 +62,7 @@ def set_realesrgan():
     )
     upsampler = RealESRGANer(
         scale=2,
-        model_path="/home/azureuser/API_script/roop_custom/CodeFormer/CodeFormer/weights/realesrgan/RealESRGAN_x2plus.pth",
+        model_path="roop_custom/CodeFormer/CodeFormer/weights/realesrgan/RealESRGAN_x2plus.pth",
         model=model,
         tile=400,
         tile_pad=40,
