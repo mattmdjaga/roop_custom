@@ -6,6 +6,7 @@ import os
 #sys.path.append("/home/azureuser/API_script/roop_custom/CodeFormer/CodeFormer")
 
 codeformer_dir = os.path.dirname(__file__) + "/CodeFormer/CodeFormer" 
+print(codeformer_dir)
 sys.path.append(codeformer_dir)
 
 import cv2
