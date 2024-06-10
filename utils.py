@@ -6,13 +6,7 @@ import os
 #sys.path.append("/home/azureuser/API_script/roop_custom/CodeFormer/CodeFormer")
 
 codeformer_dir = os.path.dirname(__file__) + "/CodeFormer/CodeFormer" 
-print("Codeformer_dir: " + codeformer_dir)
-
-current_dir = os.path.dirname(__file__)
-parent_dir = os.path.dirname(current_dir) + "/roop_custom/CodeFormer/CodeFormer"
-print("Parent_dir CODEFORMER: " + parent_dir)
-sys.path.append(parent_dir) 
-#sys.path.append(codeformer_dir)
+sys.path.append(codeformer_dir)
 
 import cv2
 import torch
