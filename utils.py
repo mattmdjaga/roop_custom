@@ -22,7 +22,7 @@ from basicsr.utils.download_util import load_file_from_url
 from facelib.utils.face_restoration_helper import FaceRestoreHelper
 from facelib.utils.misc import is_gray
 from basicsr.archs.rrdbnet_arch import RRDBNet
-from basicsr.utils.realesrgan_utils import RealESRGANer
+from CodeFormer.basicsr.utils.realesrgan_utils import RealESRGANer
 
 from basicsr.utils.registry import ARCH_REGISTRY
 
