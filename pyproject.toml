@@ -1,5 +1,5 @@
 [project]
-name = "roop"
+name = "roop_custom"
 version = "1.0.0"
 description = "Take a photo and replace the face in it with a face of your choice. You only need one image of the desired face. No dataset, no training."
 readme = "README.md"
@@ -32,9 +32,11 @@ dependencies = [
 requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["roop"]
-py-modules = ["utils"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = []  
+exclude = ["CodeFormer*"]
+namespaces = false
 
 [tool.setuptools_scm]
 write_to = "roop_custom/roop/metadata.py"
