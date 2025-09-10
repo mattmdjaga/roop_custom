@@ -31,7 +31,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["CodeFormer", "CodeFormer.basicsr", "roop"]  
+include = ["CodeFormer", "CodeFormer.basicsr", "roop_custom"]  
 exclude = []
 namespaces = false
 
