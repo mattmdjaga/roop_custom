@@ -11,13 +11,13 @@ current_dir = os.path.dirname(__file__)
 parent_parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
 sys.path.append(parent_parent_dir)
 
-import roop.globals
-import roop.processors.frame.core
-from roop.core import update_status
-from roop.face_analyser import get_one_face, get_many_faces, find_similar_face
-from roop.face_reference import get_face_reference, set_face_reference, clear_face_reference
-from roop.typing import Face, Frame
-from roop.utilities import conditional_download, resolve_relative_path, is_image, is_video
+import roop_custom.globals
+import roop_custom.processors.frame.core
+from roop_custom.core import update_status
+from roop_custom.face_analyser import get_one_face, get_many_faces, find_similar_face
+from roop_custom.face_reference import get_face_reference, set_face_reference, clear_face_reference
+from roop_custom.typing import Face, Frame
+from roop_custom.utilities import conditional_download, resolve_relative_path, is_image, is_video
 
 FACE_SWAPPER = None
 THREAD_LOCK = threading.Lock()
@@ -30,7 +30,7 @@ def get_face_swapper() -> Any:
     with THREAD_LOCK:
         if FACE_SWAPPER is None:
             model_path = resolve_relative_path('../models/inswapper_128.onnx')
-            FACE_SWAPPER = insightface.model_zoo.get_model(model_path, providers=roop.globals.execution_providers)
+            FACE_SWAPPER = insightface.model_zoo.get_model(model_path, providers=roop_custom.globals.execution_providers)
     return FACE_SWAPPER
 
 
@@ -47,13 +47,13 @@ def pre_check() -> bool:
 
 
 def pre_start() -> bool:
-    if not is_image(roop.globals.source_path):
+    if not is_image(roop_custom.globals.source_path):
         update_status('Select an image for source path.', NAME)
         return False
-    elif not get_one_face(cv2.imread(roop.globals.source_path)):
+    elif not get_one_face(cv2.imread(roop_custom.globals.source_path)):
         update_status('No face in source path detected.', NAME)
         return False
-    if not is_image(roop.globals.target_path) and not is_video(roop.globals.target_path):
+    if not is_image(roop_custom.globals.target_path) and not is_video(roop_custom.globals.target_path):
         update_status('Select an image or video for target path.', NAME)
         return False
     return True
@@ -69,7 +69,7 @@ def swap_face(source_face: Face, target_face: Face, temp_frame: Frame) -> Frame:
 
 
 def process_frame(source_face: Face, reference_face: Face, temp_frame: Frame) -> Frame:
-    if roop.globals.many_faces:
+    if roop_custom.globals.many_faces:
         many_faces = get_many_faces(temp_frame)
         if many_faces:
             for target_face in many_faces:
@@ -83,7 +83,7 @@ def process_frame(source_face: Face, reference_face: Face, temp_frame: Frame) ->
 
 def process_frames(source_path: str, temp_frame_paths: List[str], update: Callable[[], None]) -> None:
     source_face = get_one_face(cv2.imread(source_path))
-    reference_face = None if roop.globals.many_faces else get_face_reference()
+    reference_face = None if roop_custom.globals.many_faces else get_face_reference()
     for temp_frame_path in temp_frame_paths:
         temp_frame = cv2.imread(temp_frame_path)
         result = process_frame(source_face, reference_face, temp_frame)
@@ -96,16 +96,16 @@ def process_image(args):
     source_img, target_img = args
     source_face = get_one_face(cv2.cvtColor(np.array(source_img), cv2.COLOR_RGB2BGR))
     target_frame = cv2.cvtColor(np.array(target_img), cv2.COLOR_RGB2BGR)
-    #reference_face = None if roop.globals.many_faces else get_one_face(target_frame, roop.globals.reference_face_position)
-    reference_face = None if roop.globals.many_faces else get_one_face(target_frame, 0)
+    #reference_face = None if roop_custom.globals.many_faces else get_one_face(target_frame, roop_custom.globals.reference_face_position)
+    reference_face = None if roop_custom.globals.many_faces else get_one_face(target_frame, 0)
     result = process_frame(source_face, reference_face, target_frame)
     #cv2.imwrite(output_path, result)
     return result
 
 
 def process_video(source_path: str, temp_frame_paths: List[str]) -> None:
-    if not roop.globals.many_faces and not get_face_reference():
-        reference_frame = cv2.imread(temp_frame_paths[roop.globals.reference_frame_number])
-        reference_face = get_one_face(reference_frame, roop.globals.reference_face_position)
+    if not roop_custom.globals.many_faces and not get_face_reference():
+        reference_frame = cv2.imread(temp_frame_paths[roop_custom.globals.reference_frame_number])
+        reference_face = get_one_face(reference_frame, roop_custom.globals.reference_face_position)
         set_face_reference(reference_face)
-    roop.processors.frame.core.process_video(source_path, temp_frame_paths, process_frames)
+    roop_custom.processors.frame.core.process_video(source_path, temp_frame_paths, process_frames)

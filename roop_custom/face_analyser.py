@@ -41,28 +41,28 @@ def suggest_execution_threads() -> int:
 
 def update_status(message: str, scope: str = "ROOP.CORE") -> None:
     print(f"[{scope}] {message}")
-    if not roop.globals.headless:
+    if not roop_custom.globals.headless:
         ui.update_status(message)
 
 current_dir = os.path.dirname(__file__)
 parent_parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_parent_dir)
 
-import roop.globals
-from roop.typing import Frame, Face
+import roop_custom.globals
+from roop_custom.typing import Frame, Face
 
-from roop.utilities import normalize_output_path
-roop.globals.many_faces = False 
-roop.globals.reference_face_position = 0
-roop.globals.reference_frame_number = 0
-roop.globals.similar_face_distance = 0.85
-roop.globals.execution_providers = decode_execution_providers(
+from roop_custom.utilities import normalize_output_path
+roop_custom.globals.many_faces = False 
+roop_custom.globals.reference_face_position = 0
+roop_custom.globals.reference_frame_number = 0
+roop_custom.globals.similar_face_distance = 0.85
+roop_custom.globals.execution_providers = decode_execution_providers(
     ["cpu"]
 )
-roop.globals.execution_threads = (
+roop_custom.globals.execution_threads = (
     suggest_execution_threads()
 )
-roop.globals.headless = True
+roop_custom.globals.headless = True
 
 FACE_ANALYSER = None
 THREAD_LOCK = threading.Lock()
@@ -73,7 +73,7 @@ def get_face_analyser() -> Any:
 
     with THREAD_LOCK:
         if FACE_ANALYSER is None:
-            FACE_ANALYSER = insightface.app.FaceAnalysis(name='buffalo_l', providers=roop.globals.execution_providers)
+            FACE_ANALYSER = insightface.app.FaceAnalysis(name='buffalo_l', providers=roop_custom.globals.execution_providers)
             FACE_ANALYSER.prepare(ctx_id=0)
     return FACE_ANALYSER
 
@@ -108,6 +108,6 @@ def find_similar_face(frame: Frame, reference_face: Face) -> Optional[Face]:
         for face in many_faces:
             if hasattr(face, 'normed_embedding') and hasattr(reference_face, 'normed_embedding'):
                 distance = numpy.sum(numpy.square(face.normed_embedding - reference_face.normed_embedding))
-                if distance < roop.globals.similar_face_distance:
+                if distance < roop_custom.globals.similar_face_distance:
                     return face
     return None
