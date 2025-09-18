@@ -22,7 +22,8 @@ dependencies = [
     "tkinterdnd2-universal==1.7.3",
     "onnxruntime==1.15.1",
     "onnxruntime-gpu==1.15.1",
-    "typing-extensions>=4.12.2"
+    "typing-extensions>=4.12.2",
+    "basicsr==1.4.2"
 ]
 
 [build-system]
